@@ -20,7 +20,6 @@ class HeadHunterData(AbstractAPI):
     """
 
     def __init__(self):
-        # self.companies = ['яндекс', '2gis']
         self.employers = []
         self.new_emp_list = []
         self.vacancies = []

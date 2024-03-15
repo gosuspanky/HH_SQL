@@ -235,6 +235,5 @@ if __name__ == '__main__':
     # print(dbmanager.get_all_vacancies())
     # print(dbmanager.get_avg_salary())
     # print(dbmanager.get_vacancies_with_higher_salary())
-    # print(dbmanager.get_vacancies_with_higher_salary())
     print(dbmanager.get_vacancies_with_keyword('Продавец'))
     dbmanager.close_connection()
