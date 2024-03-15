@@ -83,11 +83,11 @@ class HeadHunterData(AbstractAPI):
         for vac in self.vacancies:
             name = f'{vac['name']}'
             area = f'{vac['area']['name']}'
-            currency = f'{vac['name']}'
             url = f'{vac['alternate_url']}'
             employer_name = f'{vac['employer']['name']}'
 
             if vac['salary'] is not None:
+                currency = f'{vac['salary']['currency']}'
                 if vac['salary']['from'] is not None:
 
                     salary_from = vac['salary']['from']
@@ -99,8 +99,8 @@ class HeadHunterData(AbstractAPI):
                 else:
                     salary_to = 0
             else:
-
                 salary_from, salary_to = 0, 0
+                currency = 'RUR'
 
             vac_dict = {
                 'name': name,
@@ -126,4 +126,4 @@ if __name__ == '__main__':
     x.get_vacancies_from_emp()
     # print(x.vacancies)
     x.new_vacancies_dicts()
-    print(x.new_vac_list)
+    # print(x.new_vac_list)
