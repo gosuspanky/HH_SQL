@@ -114,15 +114,3 @@ class HeadHunterData(AbstractAPI):
             self.new_vac_list.append(vac_dict)
 
         return self.new_vac_list
-
-
-if __name__ == '__main__':
-    x = HeadHunterData()
-    x.get_employers()
-    # print(x.employers)
-    x.new_employers_dicts()
-    # print(x.new_emp_list)
-    x.get_vacancies_from_emp()
-    # print(x.vacancies)
-    x.new_vacancies_dicts()
-    # print(x.new_vac_list)

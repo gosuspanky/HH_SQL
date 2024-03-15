@@ -1,4 +1,8 @@
 def print_vacancies(vac_list):
+    """
+    Функция вывода вакансий в красивой форме
+    :param vac_list: любой список вакансий, в котором будут нужные словари
+   """
     for vac in vac_list:
         if vac['Salary_from'] != 0 and vac['Salary_to'] != 0:
             print(f'Наименование компании: {vac['Company_name']}\n'

@@ -10,24 +10,24 @@ def main():
 
         dbmanager = DBManager(params)
 
-        dbmanager.create_connection('postgres')
-        dbmanager.create_database('hh_parser')
+        dbmanager.create_connection('postgres')  # соединяемся с какой-нибудь БД
+        dbmanager.create_database('hh_parser')  # создаем новую БД
         dbmanager.close_connection()
 
         hh_data = HeadHunterData()
-        hh_data.get_employers()
-        hh_data.new_employers_dicts()
-        hh_data.get_vacancies_from_emp()
-        hh_data.new_vacancies_dicts()
+        hh_data.get_employers()  # получаем данные по компаниям
+        hh_data.new_employers_dicts()  # создание нового списка словарей
+        hh_data.get_vacancies_from_emp()  # получаем данные по вакансиям полученных компаний
+        hh_data.new_vacancies_dicts()  # создание списка словарей по вакансиям
 
         dbmanager.create_connection('hh_parser')
-        dbmanager.create_tables()
-        dbmanager.insert_data(hh_data.new_emp_list, hh_data.new_vac_list)
+        dbmanager.create_tables()  # создаем таблицы
+        dbmanager.insert_data(hh_data.new_emp_list, hh_data.new_vac_list)  # вводим полученные данные
 
-        employers = dbmanager.get_companies_and_vacancies_count()
-        vacancies = dbmanager.get_all_vacancies()
-        average_salary = dbmanager.get_avg_salary()
-        high_salary_vacancies = dbmanager.get_vacancies_with_higher_salary()
+        employers = dbmanager.get_companies_and_vacancies_count()  # данные по компаниям из БД
+        vacancies = dbmanager.get_all_vacancies()  # данные по вакансиям из БД
+        average_salary = dbmanager.get_avg_salary()  # среднее значение по З/П
+        high_salary_vacancies = dbmanager.get_vacancies_with_higher_salary()  # список вакансий выше средней З/П
         dbmanager.close_connection()
 
         print('Перед вами есть задания для выполнения команд\n'

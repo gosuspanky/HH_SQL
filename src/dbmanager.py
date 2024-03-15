@@ -5,6 +5,9 @@ from src.parser import HeadHunterData
 
 
 class DBManager:
+    """
+    Класс работы с БД и данным в нем
+    """
 
     def __init__(self, params: dict):
         self.params = params
@@ -12,15 +15,27 @@ class DBManager:
         self.cursor = ''
 
     def create_connection(self, dbname):
+        """
+        Метод создания соединения с БД
+        :param dbname: имя базы данных для подключения
+        """
         self.conn = psycopg2.connect(dbname=dbname, **self.params)
         self.conn.autocommit = True
         self.cursor = self.conn.cursor()
 
     def close_connection(self):
+        """
+        Метод закрытия соединения с БД
+        """
         self.cursor.close()
         self.conn.close()
 
     def create_database(self, dbname):
+        """
+        Метод создания БД
+        :param dbname: имя БД
+        :return:
+        """
         try:
             self.cursor.execute(f'CREATE DATABASE {dbname}')
         except psycopg2.errors.DuplicateDatabase:
@@ -28,6 +43,9 @@ class DBManager:
             self.cursor.execute(f'CREATE DATABASE {dbname}')
 
     def create_tables(self):
+        """
+        Метод создания таблиц компаний с HH.ru и их вакансий в БД
+        """
         self.cursor.execute("""
                 CREATE TABLE employers (
                         employer_id INTEGER PRIMARY KEY,
@@ -51,6 +69,11 @@ class DBManager:
         """)
 
     def insert_data(self, emp_data, vac_data):
+        """
+        Метод добавления данных в таблицы БД
+        :param emp_data: данные по компаниям
+        :param vac_data: данные по вакансиям компаний
+        """
         for emp in emp_data:
             self.cursor.execute("""
                     INSERT INTO employers (employer_id, employer_title, employer_url, 
@@ -75,8 +98,8 @@ class DBManager:
 
     def get_companies_and_vacancies_count(self):
         """
-         получает список всех компаний и количество вакансий у каждой компании.
-        :return:
+        Получает список всех компаний и количество вакансий у каждой компании.
+        :return: Возвращает список компаний
         """
         companies_list = []
 
@@ -101,9 +124,9 @@ class DBManager:
 
     def get_all_vacancies(self):
         """
-        получает список всех вакансий
+        Получает список всех вакансий
         с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию.
-        :return:
+        :return: Возвращает искомый список
         """
         vacancies_list = []
 
@@ -133,8 +156,8 @@ class DBManager:
 
     def get_avg_salary(self):
         """
-        получает среднюю зарплату по вакансиям.
-        :return:
+        Получает среднюю зарплату по вакансиям.
+        :return: среднюю З/П
         """
         salaries_list = []
         self.cursor.execute(
@@ -172,8 +195,8 @@ class DBManager:
 
     def get_vacancies_with_higher_salary(self):
         """
-        получает список всех вакансий, у которых зарплата выше средней по всем вакансиям
-        :return:
+        Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям
+        :return: искомый список
         """
         average_salary = self.get_avg_salary()
         vacancies_list = self.get_all_vacancies()
@@ -194,11 +217,11 @@ class DBManager:
 
     def get_vacancies_with_keyword(self, keyword):
         """
-        получает список всех вакансий, в названии которых
+        Получает список всех вакансий, в названии которых
         содержатся переданные в метод слова, например python.
 
-        :param keyword: переданные в метод слова
-        :return:
+        :param keyword: ключевое слово для поиска
+        :return: искомый список по ключевому слову
         """
         vacancies_list = self.get_all_vacancies()
         sorted_vac_list = []
@@ -208,32 +231,3 @@ class DBManager:
                 sorted_vac_list.append(vac)
 
         return sorted_vac_list
-
-
-if __name__ == '__main__':
-    params = config()
-
-    dbmanager = DBManager(params)
-
-    # dbmanager.create_connection('postgres')
-    # dbmanager.create_database('hh_parser')
-    # dbmanager.close_connection()
-
-    # hh_data = HeadHunterData()
-    # hh_data.get_employers()
-    # hh_data.new_employers_dicts()
-    # hh_data.get_vacancies_from_emp()
-    # hh_data.new_vacancies_dicts()
-
-    # dbmanager.create_connection('hh_parser')
-    # dbmanager.create_tables()
-    # dbmanager.insert_data(hh_data.new_emp_list, hh_data.new_vac_list)
-    # dbmanager.close_connection()
-
-    dbmanager.create_connection('hh_parser')
-    # dbmanager.get_companies_and_vacancies_count()
-    # print(dbmanager.get_all_vacancies())
-    # print(dbmanager.get_avg_salary())
-    # print(dbmanager.get_vacancies_with_higher_salary())
-    print(dbmanager.get_vacancies_with_keyword('Продавец'))
-    dbmanager.close_connection()
