@@ -158,6 +158,11 @@ class DBManager:
                     salary = row[0] * 92
                 elif row[2] == "RUR":
                     salary = row[0]
+            elif row[0] != 0 and row[1] != 0:
+                if row[2] == 'USD':
+                    salary = row[0] * 92
+                elif row[2] == "RUR":
+                    salary = row[0]
 
             salaries_list.append(salary)
 
@@ -179,6 +184,9 @@ class DBManager:
                 if vac['Salary_to'] >= average_salary:
                     sorted_vacancies_list.append(vac)
             elif vac['Salary_from'] != 0 and vac['Salary_to'] == 0:
+                if vac['Salary_from'] >= average_salary:
+                    sorted_vacancies_list.append(vac)
+            elif vac['Salary_from'] != 0 and vac['Salary_to'] != 0:
                 if vac['Salary_from'] >= average_salary:
                     sorted_vacancies_list.append(vac)
 
